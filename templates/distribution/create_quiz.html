@@ -3,11 +3,11 @@
 {% block title %}Distribute Quiz - QuizMaker{% endblock %}
 
 {% block content %}
-<div class="card card-center">
-    <h2>Distribute Quiz</h2>
-    <p class="subtitle">Set up distribution parameters, access code, target classes, and test type.</p>
+<div class="box narrow">
+    <h1>Distribute Quiz</h1>
+    <p class="text-muted">Set up distribution parameters, access code, and target classes.</p>
 
-    <form method="post" class="form">
+    <form method="post">
         {% csrf_token %}
 
         {% if form.non_field_errors %}
@@ -26,38 +26,31 @@
             <div class="form-group form-col">
                 <label for="{{ form.access_code.id_for_label }}">Access Code *</label>
                 {{ form.access_code }}
-                <small class="text-muted">Code given to students to unlock the quiz</small>
                 {{ form.access_code.errors }}
             </div>
 
             <div class="form-group form-col">
-                <label for="{{ form.time_limit_minutes.id_for_label }}">Time Limit (Minutes)</label>
+                <label for="{{ form.time_limit_minutes.id_for_label }}">Time Limit (Mins)</label>
                 {{ form.time_limit_minutes }}
                 {{ form.time_limit_minutes.errors }}
             </div>
         </div>
 
-        <div class="form-group checkbox-group">
-            <label>
+        <div class="form-group">
+            <label style="font-weight: normal;">
                 {{ form.is_formal }}
-                <strong>Mark as Formal Test</strong>
+                <strong>Mark as Formal Test</strong> (uncheck for practice/informal)
             </label>
-            <small class="text-muted" style="display:block; margin-left: 1.5rem;">
-                By default, tests are informal. Check this box if this is a formal exam/graded test.
-            </small>
         </div>
 
         <div class="form-group">
-            <label for="{{ form.description.id_for_label }}">Instructions / Description (Metadata)</label>
+            <label for="{{ form.description.id_for_label }}">Instructions / Description</label>
             {{ form.description }}
             {{ form.description.errors }}
         </div>
 
         <div class="form-group">
-            <label><strong>Target Classes (Tags):</strong></label>
-            <p class="text-muted" style="margin-bottom: 0.5rem; font-size: 0.9rem;">
-                Only students belonging to these class tags will have access to this quiz.
-            </p>
+            <label>Target Classes (Tags)</label>
             {% if form.target_classes.field.queryset.exists %}
                 <div class="checkbox-list">
                     {{ form.target_classes }}
@@ -69,7 +62,7 @@
         </div>
 
         <div class="button-group">
-            <button type="submit" class="btn btn-success">Distribute Quiz</button>
+            <button type="submit">Distribute Quiz</button>
             <a href="{% url 'teacher_dashboard' %}" class="btn btn-secondary">Cancel</a>
         </div>
     </form>

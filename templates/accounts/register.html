@@ -3,15 +3,11 @@
 {% block title %}Teacher Registration - QuizMaker{% endblock %}
 
 {% block content %}
-<div class="card card-center">
-    <h2>Teacher Registration</h2>
-    <p class="subtitle">Create a teacher account to manage classes, students, and quiz distribution</p>
+<div class="box narrow">
+    <h1>Teacher Registration</h1>
+    <p class="text-muted">Create an instructor account. Students are created by teachers and cannot self-register.</p>
 
-    <div class="alert alert-info">
-        <strong>Notice:</strong> This registration is for <strong>Teachers only</strong>. Students cannot self-register; student accounts are created directly by teachers through the Teacher's Dashboard.
-    </div>
-
-    <form method="post" class="form">
+    <form method="post" autocomplete="off">
         {% csrf_token %}
 
         {% if form.non_field_errors %}
@@ -30,11 +26,13 @@
             </div>
         {% endfor %}
 
-        <button type="submit" class="btn btn-primary">Create Teacher Account</button>
+        <button type="submit" style="width: 100%;">Create Teacher Account</button>
     </form>
 
-    <div class="form-footer">
-        <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
-    </div>
+    <hr>
+
+    <p style="font-size: 0.88rem; margin: 0;">
+        Already have an account? <a href="{% url 'login' %}">Login here</a>
+    </p>
 </div>
 {% endblock %}

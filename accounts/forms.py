@@ -7,11 +7,21 @@ User = get_user_model()
 
 class TeacherRegisterForm(forms.ModelForm):
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={"placeholder": "Password", "class": "form-control"}),
+        widget=forms.PasswordInput(attrs={
+            "placeholder": "Password",
+            "autocomplete": "new-password",
+            "data-lpignore": "true",
+            "data-1p-ignore": "true",
+        }),
         label="Password",
     )
     password_confirm = forms.CharField(
-        widget=forms.PasswordInput(attrs={"placeholder": "Confirm Password", "class": "form-control"}),
+        widget=forms.PasswordInput(attrs={
+            "placeholder": "Confirm Password",
+            "autocomplete": "new-password",
+            "data-lpignore": "true",
+            "data-1p-ignore": "true",
+        }),
         label="Confirm Password",
     )
 
@@ -19,10 +29,10 @@ class TeacherRegisterForm(forms.ModelForm):
         model = User
         fields = ("username", "email", "first_name", "last_name")
         widgets = {
-            "username": forms.TextInput(attrs={"placeholder": "Teacher Username", "class": "form-control"}),
-            "email": forms.EmailInput(attrs={"placeholder": "Email Address", "class": "form-control"}),
-            "first_name": forms.TextInput(attrs={"placeholder": "First Name", "class": "form-control"}),
-            "last_name": forms.TextInput(attrs={"placeholder": "Last Name", "class": "form-control"}),
+            "username": forms.TextInput(attrs={"placeholder": "Teacher Username", "autocomplete": "off"}),
+            "email": forms.EmailInput(attrs={"placeholder": "Email Address", "autocomplete": "off"}),
+            "first_name": forms.TextInput(attrs={"placeholder": "First Name", "autocomplete": "off"}),
+            "last_name": forms.TextInput(attrs={"placeholder": "Last Name", "autocomplete": "off"}),
         }
 
     def clean(self):
@@ -50,7 +60,12 @@ class StudentCreationByTeacherForm(forms.ModelForm):
     Students cannot create their own accounts; teachers do this for them.
     """
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={"placeholder": "Temporary Password for Student", "class": "form-control"}),
+        widget=forms.PasswordInput(attrs={
+            "placeholder": "Temporary Password for Student",
+            "autocomplete": "new-password",
+            "data-lpignore": "true",
+            "data-1p-ignore": "true",
+        }),
         label="Initial Password",
     )
     assigned_classes = forms.ModelMultipleChoiceField(
@@ -64,10 +79,10 @@ class StudentCreationByTeacherForm(forms.ModelForm):
         model = User
         fields = ("username", "first_name", "last_name", "email")
         widgets = {
-            "username": forms.TextInput(attrs={"placeholder": "Student Username / Roll No", "class": "form-control"}),
-            "first_name": forms.TextInput(attrs={"placeholder": "First Name", "class": "form-control"}),
-            "last_name": forms.TextInput(attrs={"placeholder": "Last Name", "class": "form-control"}),
-            "email": forms.EmailInput(attrs={"placeholder": "Student Email (optional)", "class": "form-control"}),
+            "username": forms.TextInput(attrs={"placeholder": "Student Username / Roll No", "autocomplete": "off"}),
+            "first_name": forms.TextInput(attrs={"placeholder": "First Name", "autocomplete": "off"}),
+            "last_name": forms.TextInput(attrs={"placeholder": "Last Name", "autocomplete": "off"}),
+            "email": forms.EmailInput(attrs={"placeholder": "Student Email (optional)", "autocomplete": "off"}),
         }
 
     def __init__(self, *args, teacher=None, **kwargs):

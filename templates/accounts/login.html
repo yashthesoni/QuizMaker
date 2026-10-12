@@ -3,37 +3,61 @@
 {% block title %}Login - QuizMaker{% endblock %}
 
 {% block content %}
-<div class="card card-center">
-    <h2>Login</h2>
-    <p class="subtitle">Access your teacher or student dashboard</p>
+<div class="box narrow">
+    <h1>Login</h1>
+    <p class="text-muted">Enter your credentials to continue.</p>
 
-    <form method="post" class="form">
+    {% if form.errors %}
+        <div class="alert alert-error">
+            Invalid username or password. Please try again.
+        </div>
+    {% endif %}
+
+    <form method="post" autocomplete="off">
         {% csrf_token %}
-        
-        {% if form.non_field_errors %}
-            <div class="alert alert-error">
-                {{ form.non_field_errors }}
-            </div>
-        {% endif %}
 
         <div class="form-group">
             <label for="id_username">Username</label>
-            {{ form.username }}
-            {{ form.username.errors }}
+            <input 
+                type="text" 
+                name="username" 
+                id="id_username" 
+                autocomplete="off" 
+                autocapitalize="none" 
+                spellcheck="false" 
+                data-lpignore="true" 
+                data-1p-ignore="true" 
+                required 
+                autofocus 
+                value="{{ form.username.value|default:'' }}"
+            >
         </div>
 
         <div class="form-group">
             <label for="id_password">Password</label>
-            {{ form.password }}
-            {{ form.password.errors }}
+            <input 
+                type="password" 
+                name="password" 
+                id="id_password" 
+                autocomplete="new-password" 
+                data-lpignore="true" 
+                data-1p-ignore="true" 
+                readonly 
+                onfocus="this.removeAttribute('readonly');" 
+                required
+            >
         </div>
 
-        <button type="submit" class="btn btn-primary">Sign In</button>
+        <button type="submit" style="width: 100%;">Sign In</button>
     </form>
 
-    <div class="form-footer">
-        <p>Are you a teacher without an account? <a href="{% url 'register' %}">Register here</a></p>
-        <p class="note"><strong>Students:</strong> You cannot create accounts yourself. Please obtain your login credentials from your teacher.</p>
-    </div>
+    <hr>
+
+    <p style="font-size: 0.88rem; margin-bottom: 6px;">
+        <strong>Teachers:</strong> Need an account? <a href="{% url 'register' %}">Register here</a>.
+    </p>
+    <p style="font-size: 0.85rem; color: #666; margin: 0;">
+        <strong>Students:</strong> You cannot self-register. Your teacher will provide your account credentials.
+    </p>
 </div>
 {% endblock %}
