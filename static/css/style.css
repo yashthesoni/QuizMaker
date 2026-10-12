@@ -1,4 +1,4 @@
-/* Absolute Minimal CSS */
+/* Minimal CSS with clean border rounding */
 * {
     margin: 0;
     padding: 0;
@@ -51,6 +51,9 @@ body {
 .user-badge {
     color: #555;
     font-size: 0.88rem;
+    background: #f0f0f0;
+    padding: 3px 8px;
+    border-radius: 4px;
 }
 
 .link-btn {
@@ -118,11 +121,11 @@ input[type="number"],
 select,
 textarea {
     width: 100%;
-    padding: 8px 10px;
+    padding: 8px 12px;
     font-size: 0.95rem;
     font-family: inherit;
     border: 1px solid #333;
-    border-radius: 0;
+    border-radius: 6px;
     background: #fff;
     color: #111;
 }
@@ -171,7 +174,7 @@ button,
     cursor: pointer;
     text-decoration: none;
     text-align: center;
-    border-radius: 0;
+    border-radius: 6px;
 }
 
 button:hover,
@@ -200,6 +203,7 @@ button:hover,
 .btn-sm {
     padding: 4px 10px;
     font-size: 0.85rem;
+    border-radius: 4px;
 }
 
 .button-group, .btn-row, .action-buttons {
@@ -214,6 +218,7 @@ button:hover,
     border: 1px solid #333;
     padding: 24px;
     margin-top: 16px;
+    border-radius: 8px;
 }
 
 .narrow {
@@ -225,6 +230,8 @@ button:hover,
 .table-container {
     overflow-x: auto;
     margin-top: 10px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
 }
 
 table, .table {
@@ -234,9 +241,18 @@ table, .table {
 }
 
 th, td, .table th, .table td {
-    border: 1px solid #bbb;
+    border-bottom: 1px solid #bbb;
+    border-right: 1px solid #bbb;
     padding: 8px 10px;
     text-align: left;
+}
+
+th:last-child, td:last-child, .table th:last-child, .table td:last-child {
+    border-right: none;
+}
+
+tr:last-child td, .table tr:last-child td {
+    border-bottom: none;
 }
 
 th, .table th {
@@ -249,6 +265,8 @@ th, .table th {
     list-style: none;
     border: 1px solid #bbb;
     margin-top: 8px;
+    border-radius: 6px;
+    overflow: hidden;
 }
 
 .item {
@@ -267,6 +285,7 @@ th, .table th {
     padding: 10px;
     max-height: 160px;
     overflow-y: auto;
+    border-radius: 6px;
 }
 
 .checkbox-list ul {
@@ -280,10 +299,11 @@ th, .table th {
 /* Tags & Badges */
 .badge, .tag {
     display: inline-block;
-    padding: 2px 6px;
+    padding: 2px 8px;
     font-size: 0.8rem;
     border: 1px solid #999;
     background: #f7f7f7;
+    border-radius: 4px;
 }
 
 .badge-tag {
@@ -313,6 +333,7 @@ th, .table th {
     margin-bottom: 14px;
     font-size: 0.9rem;
     background: #f9f9f9;
+    border-radius: 6px;
 }
 
 .alert-error {
@@ -357,6 +378,7 @@ th, .table th {
     padding: 10px 16px;
     flex: 1;
     min-width: 120px;
+    border-radius: 8px;
 }
 
 .stat-number {
