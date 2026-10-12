@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - QuizMaker{% endblock %}
+
+{% block content %}
+<div class="card card-center">
+    <h2>Login</h2>
+    <p class="subtitle">Access your teacher or student dashboard</p>
+
+    <form method="post" class="form">
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+            <div class="alert alert-error">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <div class="form-group">
+            <label for="id_username">Username</label>
+            {{ form.username }}
+            {{ form.username.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_password">Password</label>
+            {{ form.password }}
+            {{ form.password.errors }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Sign In</button>
+    </form>
+
+    <div class="form-footer">
+        <p>Are you a teacher without an account? <a href="{% url 'register' %}">Register here</a></p>
+        <p class="note"><strong>Students:</strong> You cannot create accounts yourself. Please obtain your login credentials from your teacher.</p>
+    </div>
+</div>
+{% endblock %}

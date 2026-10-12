@@ -1,8 +1,25 @@
 {% extends 'base.html' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Home - QuizMaker{% endblock %}
 
 {% block content %}
-    <h1>This is the home page</h1>
-    <p>Welcome to the Django application. ~ Yash</p>
+<div class="card card-center" style="text-align: center; padding: 2.5rem 1.5rem;">
+    <h1>Welcome to QuizMaker</h1>
+    <p class="subtitle" style="margin-top: 0.5rem;">
+        Role-based quiz distribution system for Teachers and Students.
+    </p>
+
+    <div style="margin: 2rem 0; display: flex; justify-content: center; gap: 1rem;">
+        {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}" class="btn btn-primary">Go to Your Dashboard &rarr;</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="btn btn-primary">Sign In</a>
+            <a href="{% url 'register' %}" class="btn btn-secondary">Teacher Sign Up</a>
+        {% endif %}
+    </div>
+
+    <div style="margin-top: 2rem; border-top: 1px solid #eaeef2; padding-top: 1.25rem; font-size: 0.88rem; color: #57606a;">
+        <p><strong>System Policy:</strong> Students cannot self-register. Teacher accounts distribute quizzes via secure access codes and manage student enrollments.</p>
+    </div>
+</div>
 {% endblock %}

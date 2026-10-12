@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Dashboard - QuizMaker{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <div>
+        <h1>Student Dashboard</h1>
+        <p class="subtitle">Welcome, {{ user.first_name|default:user.username }}! View your enrolled classes and unlock quizzes.</p>
+    </div>
+</div>
+
+<!-- Enrolled Classes -->
+<div class="card">
+    <h2>Your Enrolled Classes (Tags)</h2>
+    {% if enrolled_classes %}
+        <div class="tags-container">
+            {% for c in enrolled_classes %}
+                <span class="badge badge-tag badge-large">{{ c.name }} ({{ c.code }})</span>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty-state">You are not enrolled in any classes yet. Your teacher will assign you to your classes.</p>
+    {% endif %}
+</div>
+
+<!-- Available Quizzes -->
+<div class="card" style="margin-top: 2rem;">
+    <h2>Quizzes Available for Your Classes</h2>
+    {% if available_quizzes %}
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Quiz Title</th>
+                        <th>Type</th>
+                        <th>Time Limit</th>
+                        <th>Teacher</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for q in available_quizzes %}
+                        <tr>
+                            <td><strong>{{ q.title }}</strong></td>
+                            <td>
+                                {% if q.is_formal %}
+                                    <span class="badge badge-formal">Formal Test</span>
+                                {% else %}
+                                    <span class="badge badge-informal">Practice / Informal</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ q.metadata.time_limit_minutes|default:"30" }} mins</td>
+                            <td>{{ q.creator.username }}</td>
+                            <td>
+                                <a href="{% url 'unlock_quiz' q.id %}" class="btn btn-sm btn-primary">Enter Access Code</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="empty-state">No quizzes are currently assigned to your classes.</p>
+    {% endif %}
+</div>
+
+<!-- Past Results -->
+<div class="card" style="margin-top: 2rem;">
+    <h2>Your Past Quiz Results</h2>
+    {% if my_results %}
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Quiz</th>
+                        <th>Marks</th>
+                        <th>Your Answers</th>
+                        <th>Type</th>
+                        <th>Submitted At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for res in my_results %}
+                        <tr>
+                            <td><strong>{{ res.quiz.title }}</strong></td>
+                            <td><strong>{{ res.marks }}</strong> / {{ res.total_marks }}</td>
+                            <td><code>{{ res.answers|default:"(blank)" }}</code></td>
+                            <td>
+                                {% if res.is_formal %}
+                                    <span class="badge badge-formal">Formal</span>
+                                {% else %}
+                                    <span class="badge badge-informal">Informal</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ res.submitted_at|date:"M d, Y H:i" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="empty-state">No completed quizzes yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

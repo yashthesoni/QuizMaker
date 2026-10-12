@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block title %}Teacher Dashboard - QuizMaker{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <div>
+        <h1>Teacher Dashboard</h1>
+        <p class="subtitle">Welcome, {{ user.first_name|default:user.username }}! Manage your classes, students, and quiz distribution.</p>
+    </div>
+    <div class="action-buttons">
+        <a href="{% url 'create_class' %}" class="btn btn-secondary">+ New Class (Tag)</a>
+        <a href="{% url 'create_student' %}" class="btn btn-primary">+ Create Student Account</a>
+        <a href="{% url 'create_quiz' %}" class="btn btn-success">+ Distribute Quiz</a>
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-number">{{ classes.count }}</div>
+        <div class="stat-label">Classes (Tags)</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ students.count }}</div>
+        <div class="stat-label">Total Students</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ quizzes.count }}</div>
+        <div class="stat-label">Distributed Quizzes</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ recent_results.count }}</div>
+        <div class="stat-label">Total Submissions</div>
+    </div>
+</div>
+
+<div class="dashboard-grid">
+    <!-- Classes Section -->
+    <div class="card">
+        <h2>Your Classes / Tags</h2>
+        {% if classes %}
+            <ul class="item-list">
+                {% for cls in classes %}
+                    <li class="item">
+                        <div>
+                            <strong>{{ cls.name }}</strong>
+                            <span class="badge badge-tag">{{ cls.code }}</span>
+                        </div>
+                        <span class="text-muted">{{ cls.students.count }} student{{ cls.students.count|pluralize }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="empty-state">No classes created yet. <a href="{% url 'create_class' %}">Create your first class tag</a>.</p>
+        {% endif %}
+    </div>
+
+    <!-- Students Section -->
+    <div class="card">
+        <h2>Enrolled Students</h2>
+        {% if students %}
+            <ul class="item-list">
+                {% for st in students %}
+                    <li class="item">
+                        <div>
+                            <strong>{{ st.username }}</strong>
+                            {% if st.first_name %}<span class="text-muted">({{ st.first_name }} {{ st.last_name }})</span>{% endif %}
+                        </div>
+                        <div>
+                            {% for c in st.enrolled_classes.all %}
+                                <span class="badge badge-sm badge-tag">{{ c.name }}</span>
+                            {% empty %}
+                                <span class="text-muted">No classes</span>
+                            {% endfor %}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="empty-state">No students created yet. <a href="{% url 'create_student' %}">Create student accounts</a>.</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Distributed Quizzes Section -->
+<div class="card" style="margin-top: 2rem;">
+    <h2>Distributed Quizzes</h2>
+    {% if quizzes %}
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Quiz ID</th>
+                        <th>Title</th>
+                        <th>Access Code</th>
+                        <th>Type</th>
+                        <th>Target Classes (Tags)</th>
+                        <th>Created</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for q in quizzes %}
+                        <tr>
+                            <td>#{{ q.id }}</td>
+                            <td><strong>{{ q.title }}</strong></td>
+                            <td><code>{{ q.access_code }}</code></td>
+                            <td>
+                                {% if q.is_formal %}
+                                    <span class="badge badge-formal">Formal</span>
+                                {% else %}
+                                    <span class="badge badge-informal">Informal</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% for tc in q.target_classes.all %}
+                                    <span class="badge badge-sm badge-tag">{{ tc.name }}</span>
+                                {% empty %}
+                                    <span class="text-muted">All</span>
+                                {% endfor %}
+                            </td>
+                            <td>{{ q.created_at|date:"M d, Y" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="empty-state">No quizzes distributed yet. <a href="{% url 'create_quiz' %}">Distribute a quiz</a>.</p>
+    {% endif %}
+</div>
+
+<!-- Student Quiz Results -->
+<div class="card" style="margin-top: 2rem;">
+    <h2>Student Results & Submissions</h2>
+    {% if recent_results %}
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Quiz</th>
+                        <th>Marks</th>
+                        <th>Answers String</th>
+                        <th>Type</th>
+                        <th>Submitted At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for res in recent_results %}
+                        <tr>
+                            <td><strong>{{ res.student.username }}</strong></td>
+                            <td>{{ res.quiz.title }}</td>
+                            <td><strong>{{ res.marks }}</strong> / {{ res.total_marks }}</td>
+                            <td><code title="0=Blank, 1-9=Options">{{ res.answers|default:"(blank)" }}</code></td>
+                            <td>
+                                {% if res.is_formal %}
+                                    <span class="badge badge-formal">Formal</span>
+                                {% else %}
+                                    <span class="badge badge-informal">Informal</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ res.submitted_at|date:"M d, Y H:i" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="empty-state">No student quiz results recorded yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -39,9 +39,13 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "accounts",
     "pages",
+    "quizzes",
 ]
 
 AUTH_USER_MODEL = "accounts.User"
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "dashboard"
+LOGOUT_REDIRECT_URL = "home"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
